@@ -1,6 +1,9 @@
 #lang eopl
 
-(provide extend-env lookup env)
+(provide empty-env extend-env lookup)
+
+(define (empty-env)
+  '())
 
 (define (extend-env vars vals env)
   (cond
@@ -13,7 +16,3 @@
     (if binding
         (cadr binding)
         (eopl:error 'lookup "No such varibale: ~a" name))))
-
-(define env (list (list 'pi 3.141592653589793)
-                  (list 'e  2.718281828459045)
-                  (list '+ +)))

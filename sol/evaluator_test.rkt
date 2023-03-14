@@ -1,7 +1,24 @@
 #lang racket
 
+(require "./env.rkt")
+(require "./parser.rkt")
 (require "./evaluator.rkt")
+
 (require rackunit)
+
+(check-equal?
+ (closure-exp->parameters
+  (closure-exp (empty-env)
+               '(a b)
+               (var-exp 'a)))
+ '(a b))
+
+(check-equal?
+ (closure-exp->body
+  (closure-exp (empty-env)
+               '(a b)
+               (var-exp 'a)))
+ (var-exp 'a))
 
 (check-equal?
  (calc '42)
@@ -22,23 +39,3 @@
 (check-equal?
  (calc '((func (n) (if n n 2)) 42))
  42)
-
-(check-equal?
- (calc
-  '(((func (n)
-           (func (x)
-                 (if pi n x)))
-     42)
-    e))
- 42)
-
-; if you add ('+ +) to your environment
-; the following test cases should pass
-(check-equal?
- (calc '(+ 1 2 3))
- 6)
-
-(check-equal?
- (calc '(+ 1 2 (+ 3 4 5)))
- 15)
-
