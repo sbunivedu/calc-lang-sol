@@ -39,3 +39,12 @@
 (check-equal?
  (calc '((func (n) (if n n 2)) 42))
  42)
+
+(check-equal?
+ (calc
+  '(((func (n)
+           (func (x)
+                 (if pi n x)))
+     42)
+    e))
+ 42)

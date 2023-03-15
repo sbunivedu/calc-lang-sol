@@ -18,8 +18,12 @@
     (app-exp (procedure args)
              (applier (evaluator procedure env)
                       (map (lambda (e) (evaluator e env))
-                           args)
-                      env))
+                           args)))
+    (else #f)))
+
+(define (closure-exp->env closure)
+  (cases calc-exp closure
+    (closure-exp (env parameters body) env)
     (else #f)))
 
 (define (closure-exp->parameters closure)
@@ -32,13 +36,13 @@
     (closure-exp (env parameters body) body)
     (else #f)))
 
-(define (applier f values env)
+(define (applier f values)
   (cond
     ((closure-exp? f)
      (evaluator (closure-exp->body f)
                 (extend-env (closure-exp->parameters f)
                             values
-                            env)))
+                            (closure-exp->env f))))
     (else (apply f values))))
 
 ; First, we define those things that can't be defined in terms of others:
