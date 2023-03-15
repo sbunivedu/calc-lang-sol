@@ -47,7 +47,26 @@
 
 ; First, we define those things that can't be defined in terms of others:
 (define env (list (list 'pi 3.141592653589793)
-                  (list 'e  2.718281828459045)))
+                  (list 'e  2.718281828459045)
+                  (list '+ +)
+                  (list '- -)
+                  (list '* *)
+                  (list 'list list)
+                  (list '= (lambda (a b) (if (= a b) 1 0)))
+                  (list '< (lambda (a b) (if (< a b) 1 0)))
+                  (list '> (lambda (a b) (if (> a b) 1 0)))
+                  (list 'avg (lambda lst (/ (apply + lst) (length lst))))))
+
+; Next, we extend-env with those things that can use the previous things:
+
+(set! env
+      (extend-env
+       '(min max)
+       (list
+        (evaluator (parser '(func (a b) (if (< a b) a b))) env)
+        (evaluator (parser '(func (a b) (if (> a b) a b))) env))
+       env))
+
 
 (define (calc exp)
   (evaluator (parser exp) env))
