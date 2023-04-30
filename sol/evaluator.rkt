@@ -19,6 +19,12 @@
              (applier (evaluator procedure env)
                       (map (lambda (e) (evaluator e env))
                            args)))
+    (let-exp (vars vals body)
+             (evaluator body (extend-env
+                              vars
+                              (map (lambda (e) (evaluator e env))
+                                   vals)
+                              env)))
     (else #f)))
 
 (define (closure-exp->env closure)
@@ -73,3 +79,20 @@
 
 (define (true? v)
   (not (= v 0)))
+
+(calc '
+      ((func (n f)
+             (if (= n 1)
+                 1
+                 (* n
+                    (f (- n
+                          1)
+                       f))))
+       5
+       (func (n f)
+             (if (= n 1)
+                 1
+                 (* n
+                    (f (- n
+                          1)
+                       f))))))

@@ -13,6 +13,8 @@ The concrete syntax for the Calc language is as follows ([] denotes abstract syn
              procedure-exp (parameters body)
              ::= (<expression> <expression>)
              app-exp (procedure args)
+             ::= (let-exp (({<identifier>}*) ({<expression>}*)) <expresion>)
+             let-exp (var vals body)
 ```
 
 Example programs:
@@ -26,6 +28,11 @@ pi
 ((func (n) n) 42)
 
 ((func (n) (if n n 2)) 42)
+
+(let ((a 1) (b 2) (c 3)) (+ a b c))
+
+(let ((add1 (func (a b) (+ a b)))) (add1 1 2))
+
 ```
 
 ## Syntax datatype

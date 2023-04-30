@@ -51,3 +51,11 @@
                           (var-exp 'a))
            (list (lit-exp 1)
                  (lit-exp 2))))
+
+(check-equal?
+ (parser '(let ((a 1) (b 2) (c 3)) (sum a b c)))
+ (let-exp '(a b c)
+          (list (lit-exp 1) (lit-exp 2) (lit-exp 3))
+          (app-exp
+           (var-exp 'sum)
+           (list (var-exp 'a) (var-exp 'b) (var-exp 'c)))))

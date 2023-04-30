@@ -45,7 +45,12 @@
    (body calc-exp?))
   (app-exp
    (procedure procedure-or-var?)
-   (args (list-of calc-exp?))))
+   (args (list-of calc-exp?)))
+  (let-exp
+   (vars (list-of symbol?))
+   (vals (list-of calc-exp?))
+   (body calc-exp?)))
+
 
 (define (parser exp)
   (cond
@@ -57,5 +62,8 @@
     ((eq? (car exp) 'if) (if-exp (parser (cadr exp))
                                  (parser (caddr exp))
                                  (parser (cadddr exp))))
+    ((eq? (car exp) 'let) (let-exp (map car (cadr exp))
+                                   (map parser (map cadr (cadr exp)))
+                                   (parser (caddr exp))))
     (else (app-exp (parser (car exp))
                    (map parser (cdr exp))))))

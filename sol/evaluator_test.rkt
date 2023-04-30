@@ -74,4 +74,17 @@
 
 (check-equal?
  (calc '(avg 1 2 3 4))
- 2)
+ 5/2)
+
+(check-equal?
+ (calc '(let ((a 1) (b 2) (c 3)) (+ a b c)))
+ 6)
+
+(check-equal?
+ (calc '(let ((add1 (func (a b) (+ a b)))) (add1 1 2)))
+ 3)
+
+(check-equal?
+ (calc '(let ((f (func (y z) (+ y (- z 5)))))
+          (f 2 28)))
+ 25)
